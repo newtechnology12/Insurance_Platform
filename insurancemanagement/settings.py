@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'insurance',
     'customer',
     'import_export',
+    'rest_framework',
+
 ]
 
 MIDDLEWARE = [
