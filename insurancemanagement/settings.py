@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,13 +22,19 @@ MEDIA_ROOT=os.path.join(BASE_DIR,'static')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'ls@!_(edqp*xy76kvbsst$07at(v^li*2&ew!^$8o(@wa6@a+$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# SECURITY WARNING: keep the secret key used in production secret!
+# SECRET_KEY = config('SECRET_KEY')
+
+# # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = config('DEBUG',cast=bool)
+
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -44,6 +51,9 @@ INSTALLED_APPS = [
     'customer',
     'import_export',
     'rest_framework',
+    'drf_yasg',
+    'rest_framework_simplejwt',
+    'djoser',
 
 ]
 
@@ -81,26 +91,68 @@ WSGI_APPLICATION = 'insurancemanagement.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
+DATABASES={}
+if DEBUG:
+    DATABASES = {
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     # }
+    
 
-            'default': {
+    #    'default': {
+
+    #    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+
+    #     'NAME': "shaka",
+
+    #     'USER': 'postgres',
+
+    #     'PASSWORD': 'root',
+
+    #     'HOST': 'localhost',
+
+    #     'PORT': '5432',
+
+    # },
+
+    'default': {
 
        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+       
+        'NAME': "MotorDB",
 
-        'NAME': "shaka",
+        'USER': 'DevApp',
 
-        'USER': 'postgres',
+        'PASSWORD': 'NewPass123',
 
-        'PASSWORD': 'root',
-
-        'HOST': 'localhost',
+        'HOST': '10.112.148.17',
 
         'PORT': '5432',
 
+    }
+}
+
+
+
+REST_FRAMEWORK={
+    "NON_FIELD_ERRORS_KEY":"error",
+    "DEFAULT_AUTHENTICATION_CLASSES":(
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        )
+}
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+
+SWAGGER_SETTINGS={
+    'SECURITY_DEFINITIONS':{
+        'Bearer':{
+            'type':'apiKey',
+            'in':'header',
+            'name':'Authorization'
+        }
     }
 }
 

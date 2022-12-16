@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from customer.models import Customer
 import random
+from django.core.validators import FileExtensionValidator
 
 class InsurenceCategory(models.Model):
     category_name =models.CharField(max_length=20)
@@ -42,6 +43,7 @@ class CoverIdentification(models.Model):
     vehicle_chassisNo = models.CharField(max_length=255,default='GJG86FS', blank=True,null=True)
     vehicle_seat_capacity = models.CharField(max_length=255,default='5', blank=True,null=True)
     vihecleImage = models.ImageField(upload_to='media/%Y/%m/%d/',max_length=70, blank=True)
+    video = models.FileField(upload_to='videos_uploaded',null=True,validators=[FileExtensionValidator(allowed_extensions=['MOV','MPG','avi','mp4','webm','mkv'])])
     documents = models.FileField()
     sumInsured = models.CharField(max_length=2555,default='00,000.00',blank=True,null=True) 
     def __str__(self) -> str:
