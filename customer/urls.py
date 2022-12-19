@@ -20,7 +20,7 @@ schema_view = get_schema_view(
    permission_classes=[permissions.AllowAny],
 )
 
-app_name = 'exam'
+app_name = 'customer'
 
 urlpatterns = [
     path('message', views.index, name='index'),
