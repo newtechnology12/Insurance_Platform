@@ -87,8 +87,8 @@ class VehicleCategorySerializer(serializers.ModelSerializer):
 
 class CoverIdentificationSerializer(serializers.ModelSerializer):
     vehicle_usage = serializers.StringRelatedField()
-    
-    
+    vehicleowner = serializers.StringRelatedField()
+     
     class Meta:
         model = CoverIdentification
         fields = '__all__'

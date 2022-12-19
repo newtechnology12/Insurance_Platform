@@ -53,7 +53,7 @@ def index(request):
 
 
 class RegistrationAPIView(generics.ListCreateAPIView):
-    # permission_classes = (permissions.IsAuthenticated)
+   
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     
@@ -101,7 +101,7 @@ def Users_list_api(request, format=None):
         
 
 @api_view(['POST','GET'])
-@swagger_auto_schema(operation_summary="Create an order")
+@swagger_auto_schema(operation_summary="Create an Education and store in database")
 @permission_classes((IsAuthenticated,))
 def Education_api(request, format=None):
     """
@@ -406,7 +406,7 @@ def VehicleCategory_api(request,format=None):
 
     elif request.method == 'GET':
         createExam = VehicleCategory.objects.all()
-        serializer = PolicyRecordSerializer(createExam, many = True)
+        serializer = VehicleCategorySerializer(createExam, many = True)
         return Response(serializer.data)
 
    
@@ -629,13 +629,9 @@ def FeedBack_api_detail(request, pk, format=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['POST','GET', 'PUT', 'DELETE'])
+@api_view(['POST','GET'])
 @permission_classes((IsAuthenticated,))
-def CoverIdentification_api(request, pk, format=None):
-    """
-    POST, Retrieve, update or delete vehicle.
-    """
-
+def CoverIdentification_api(request, format=None):
 
     if  request.method == 'POST':
         serializer = CoverIdentificationSerializer(data = request.data)
@@ -655,23 +651,14 @@ def CoverIdentification_api(request, pk, format=None):
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes((IsAuthenticated,))
 def CoverIdentification_api_detail(request, pk, format=None):
-    """
-    POST, Retrieve, update or delete vehicle.
-    """
+  
     try:
         question = CoverIdentification.objects.get(pk=pk)
     except CoverIdentification.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if  request.method == 'POST':
-        serializer = CoverIdentificationSerializer(data = request.data)
-        if serializer.is_valid():
-            serializer.save()          
-            return Response(serializer.data, status = status.HTTP_201_CREATED)         
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-    elif request.method == 'GET':
+    if request.method == 'GET':
         serializer = CoverIdentificationSerializer(question)
         return Response(serializer.data)
 

@@ -14,7 +14,7 @@ class Policy(models.Model):
     category= models.ForeignKey(InsurenceCategory, on_delete=models.CASCADE)
     policy_name=models.CharField(max_length=200)
     sum_assurance=models.PositiveIntegerField()
-    premium=models.PositiveIntegerField()
+    premium=models.PositiveIntegerField()   
     tenure=models.PositiveIntegerField()
     creation_date =models.DateField(auto_now=True)
     def __str__(self):
@@ -32,9 +32,10 @@ class VehicleCategory(models.Model):
     name = models.CharField(max_length=255, blank=True, null = True)
 
     def __str__(self) -> str:
-        return self.name
+        return str(self.name)
 
 class CoverIdentification(models.Model):
+    vehicleowner = models.ForeignKey(Customer, on_delete=models.CASCADE,related_name='coverIdentification', blank=True,null=True)
     vehicle_usage = models.ForeignKey(VehicleCategory, on_delete=models.PROTECT, max_length=255, blank=True,null=True)
     vehicleManufacture_year = models.CharField(max_length=255,default='2022', blank=True,null=True)
     vehicleBrand = models.CharField(max_length=255,default='HYUNDAI', blank=True,null=True)
@@ -43,11 +44,11 @@ class CoverIdentification(models.Model):
     vehicle_chassisNo = models.CharField(max_length=255,default='GJG86FS', blank=True,null=True)
     vehicle_seat_capacity = models.CharField(max_length=255,default='5', blank=True,null=True)
     vihecleImage = models.ImageField(upload_to='media/%Y/%m/%d/',max_length=70, blank=True)
-    video = models.FileField(upload_to='videos_uploaded',null=True,validators=[FileExtensionValidator(allowed_extensions=['MOV','MPG','avi','mp4','webm','mkv'])])
-    documents = models.FileField()
+    video = models.FileField(upload_to='videos_uploaded',blank=True,null=True,validators=[FileExtensionValidator(allowed_extensions=['MOV','MPG','avi','mp4','webm','mkv'])])
+    documents = models.FileField(blank=True)
     sumInsured = models.CharField(max_length=2555,default='00,000.00',blank=True,null=True) 
-    def __str__(self) -> str:
-        return self.vehicle_usage
+    # def __str__(self) -> str:
+    #     return self.vehicle_usage
     
     @property
     def image_url(self):
@@ -79,10 +80,31 @@ class Primium(models.Model):
     sum_insuredPerOccupanr = models.CharField(max_length=255,default='3-Million-Rwf', blank=True, null=True)
     starting_date =models.DateField(auto_now=True)
     ending_date =models.DateField(auto_now=True)
+    totalNatePremium = models.CharField(max_length=2555,default='00,000.00',blank=True,null=True)
+    vat =  models.CharField(max_length=2555,default='00,000.00',blank=True,null=True)
+    medicalFess = models.CharField(max_length=2555,default='00,000.00',blank=True,null=True)
+    accidentDeath = models.CharField(max_length=2555,default='00,000.00',blank=True,null=True)  
+    motoGuarantyFound = models.CharField(max_length=2555,default='00,000.00',blank=True,null=True)
+    totalPremiumPayable = models.CharField(max_length=2555,default='00,000.00',blank=True,null=True)
     status = models.CharField(max_length=30, blank = True, null=True, default='pending')
 
     def __str__(self) -> str:
         return self.duration
+    
+    # def totalPremiumPayable():
+    #     pass
+
+    # def vat():
+    #     pass
+
+    # def motoGuarantyFound():
+    #     pass
+
+    # def totalNatePremium():
+    #     pass
+
+    # def netPremium():
+    #     pass
 
 
 class Insured(models.Model):

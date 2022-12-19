@@ -11,6 +11,6 @@ urlpatterns = [
 
     path('customer/',include('customer.urls')),
     path('auth/', include('djoser.urls')),
-    path('autha/', include('djoser.urls.jwt')),
+    path('auth/', include('djoser.urls.jwt')),
     # path('',views.home_view,name=''),
 ]

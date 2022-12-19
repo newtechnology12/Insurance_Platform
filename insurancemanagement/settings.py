@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-from decouple import config
+from datetime import timedelta
+# from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -100,49 +101,54 @@ if DEBUG:
     # }
     
 
-    #    'default': {
-
-    #    'ENGINE': 'django.db.backends.postgresql_psycopg2',
-
-    #     'NAME': "shaka",
-
-    #     'USER': 'postgres',
-
-    #     'PASSWORD': 'root',
-
-    #     'HOST': 'localhost',
-
-    #     'PORT': '5432',
-
-    # },
-
-    'default': {
+       'default': {
 
        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-       
-        'NAME': "MotorDB",
 
-        'USER': 'DevApp',
+        'NAME': "shaka",
 
-        'PASSWORD': 'NewPass123',
+        'USER': 'postgres',
 
-        'HOST': '10.112.148.17',
+        'PASSWORD': 'root',
+
+        'HOST': 'localhost',
 
         'PORT': '5432',
 
-    }
+    },
+
+    # 'default': {
+
+    #    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+       
+    #     'NAME': "MotorDB",
+
+    #     'USER': 'DevApp',
+
+    #     'PASSWORD': 'NewPass123',
+
+    #     'HOST': '10.112.148.17',
+
+    #     'PORT': '5432',
+
+    # }
 }
 
 
 
-REST_FRAMEWORK={
-    "NON_FIELD_ERRORS_KEY":"error",
-    "DEFAULT_AUTHENTICATION_CLASSES":(
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        )
+REST_FRAMEWORK = {
+   'DEFAULT_AUTHENTICATION_CLASSES': (
+       'rest_framework_simplejwt.authentication.JWTAuthentication',
+   ),
+   'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAdminUser'
+   ),
 }
 SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('Bearer',),
+   'ACCESS_TOKEN_LIFETIME':timedelta(days=1),
+   'REFLESH_TOKEN_LIFETIME':timedelta(days=1),
+   'BLACKLIST_AFTER_ROTATION':False,
 }
 
 

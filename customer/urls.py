@@ -10,12 +10,11 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Snippets API",
+      title="Shaka.com API",
       default_version='v1',
-      description="Test description",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@snippets.local"),
-      license=openapi.License(name="BSD License"),
+      description="We have created an insurance retails platform called kiza which helps people to get e quotation and purchase insurance from their mobile or laptop devices. Those who don’t have computer literacy can approach anyone with those skills or public secretary service providers(irembo’s agents, printing services, RRA declaration offices,...)to help them push insurance at any time.",
+      contact=openapi.Contact(email="sentongoalbert12@gmail.com"),
+      
    ),
    public=True,
    permission_classes=[permissions.AllowAny],
