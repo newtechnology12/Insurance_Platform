@@ -44,6 +44,51 @@ class CustomerSerializer(serializers.ModelSerializer):
 
         return new_user
 
+
+
+
+class CountrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Country
+        fields = '__all__'
+
+class ProvinceSerializer(serializers.ModelSerializer):
+    Country = serializers.StringRelatedField()
+    class Meta:
+        model = Province
+        fields = '__all__'
+
+class DistrictSerializer(serializers.ModelSerializer):
+    province = serializers.StringRelatedField()
+    Country = serializers.StringRelatedField()
+    class Meta:
+        model = District
+        fields = '__all__'
+
+class SectorSerializer(serializers.ModelSerializer):
+    province = serializers.StringRelatedField()
+    district = serializers.StringRelatedField()
+    Country = serializers.StringRelatedField()
+    class Meta:
+        model = Sector
+        fields = '__all__'
+
+class CellSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField()
+    profession = serializers.StringRelatedField()
+    education = serializers.StringRelatedField()
+    class Meta:
+        model = Cell
+        fields = '__all__'
+
+class VillageSerializer(serializers.ModelSerializer):
+    province = serializers.StringRelatedField()
+    district = serializers.StringRelatedField()
+    sector = serializers.StringRelatedField()
+    Country = serializers.StringRelatedField()
+    class Meta:
+        model = Village
+        fields = '__all__'
 class EducationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Education
@@ -51,7 +96,7 @@ class EducationSerializer(serializers.ModelSerializer):
 
 class ProfessionsubOccupation_DescriptionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ProfessionsubOccupation_Description
+        model = Occupation
         fields = '__all__'
 
 
@@ -62,7 +107,7 @@ class InsurenceCategorySerializer(serializers.ModelSerializer):
 
 class ProfessionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Profession
+        model = OccupationSub
         fields = '__all__'
 
 class PersonalProfileSerializer(serializers.ModelSerializer):

@@ -52,10 +52,8 @@ urlpatterns = [
     path('Insured_/details/<int:pk>', views.Insured_api_detail, name = 'Insured'),
     path('CoverIdentification_/api', views.CoverIdentification_api, name='CoverIdentification'),
     path('CoverIdentification/details/<int:pk>', views.CoverIdentification_api_detail, name = 'CoverIdentificationbyid'),
-
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     
-
 ]
 

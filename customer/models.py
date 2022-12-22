@@ -60,14 +60,6 @@ civil_status = (
 
 )
 
-GENDER = (
-    ('Male', 'MALE'),
-    ('Female','Female'),
-    ('Corporate','Corporate'),
-
-)
-
-
 ID_TYPE = (
     ('Driving_License','Driving_License'),
     ('Rwandan Nationals','Rwandan Nationals'),
@@ -97,16 +89,15 @@ class Education(models.Model):
 
     def __str__(self) -> str:
         return self.Education_Description
-class ProfessionsubOccupation_Description(models.Model):
-    ProfessionsubOccupation_Description = models.CharField(max_length=255, blank=True, null=True)
-    
-    
+class Occupation(models.Model):
+    Occupation_Description = models.CharField(max_length=255, blank=True, null=True)
+       
     def __str__(self) -> str:
-        return self.ProfessionsubOccupation_Description
+        return self.Occupation_Description
 
-class Profession(models.Model):
+class OccupationSub(models.Model):
     Occupation_Description = models.CharField(max_length=255, blank=True,null=True)
-    subOccupation_Description = models.ManyToManyField(ProfessionsubOccupation_Description)
+    subOccupation_Description = models.ForeignKey(Occupation,on_delete=models.PROTECT,blank=True,null=True)
 
 
     def list_Profession(self, obj):
@@ -121,26 +112,106 @@ client_status=(
     ('Inactive','Inactive'),
     ('Delete','Delete'),
     )
-    
+class Country(models.Model):
+    countryname = models.CharField(max_length=255, blank=True,null=True)
 
+    def __str__(self) -> str:
+        return self.countryname 
+
+class Province(models.Model):
+    Provincename = models.CharField(max_length=255, blank=True,null=True)
+    Country = models.ForeignKey(Country, on_delete=models.PROTECT, blank=True,null=True)
+    def __str__(self) -> str:
+        return self.Provincename   
+class District(models.Model):
+    districtname = models.CharField(max_length=255, blank=True,null=True)  
+    province = models.ForeignKey(Province, on_delete=models.PROTECT, blank=True,null=True)
+    Country = models.ForeignKey(Country, on_delete=models.PROTECT, blank=True,null=True)
+    
+    def __str__(self) -> str:
+        return self.districtname 
+class Sector(models.Model):
+    sectorname = models.CharField(max_length=255, blank=True,null=True)
+    province = models.ForeignKey(Province, on_delete=models.PROTECT, blank=True,null=True)
+
+    def __str__(self) -> str:
+        return self.sectorname 
+
+   
+class Cell(models.Model):
+    cellname = models.CharField(max_length=255, blank=True, null=True)
+    province = models.ForeignKey(Province, on_delete=models.PROTECT, blank=True,null=True)
+    district = models.ForeignKey(District, on_delete=models.PROTECT, blank=True,null=True)
+    sector = models.ForeignKey(Sector, on_delete=models.PROTECT, blank=True,null=True)
+    province = models.ForeignKey(Province, on_delete=models.PROTECT, blank=True,null=True)
+    Country = models.ForeignKey(Country, on_delete=models.PROTECT, blank=True,null=True)
+
+    def __str__(self) -> str:
+        return self.cellname 
+
+class Village(models.Model):
+    villagename = models.CharField(max_length=255, blank=True, null=True)
+    province = models.ForeignKey(Province, on_delete=models.PROTECT, blank=True,null=True)
+    district = models.ForeignKey(District, on_delete=models.PROTECT, blank=True,null=True)
+    sector = models.ForeignKey(Sector, on_delete=models.PROTECT, blank=True,null=True)
+    Country = models.ForeignKey(Country, on_delete=models.PROTECT, blank=True,null=True)
+
+    def __str__(self) -> str:
+        return self.villagename 
+INITIALS= ( 
+("MISS","Miss"),
+("MR","Mister"),
+("MRS","Mrs"),
+("MS","Miss/Mrs"),
+("CORP","Company"),
+("J","Joint/Group Acc")
+)
+
+STATUS = (('Corporate Custome','Corporate Custome'),('Individual Customer','Individual Customer'))
 class PersonalProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,blank=True,null=True)
-    identification = models.CharField(max_length=255,blank=True, null=False, choices=ID_TYPE)
-    identificationId = models.CharField(max_length=255,blank=True, null=False, unique=True)
+    
+    
+    classification = models.CharField(max_length=255,blank=True, null=False)
+    initials = models.CharField(max_length=255,blank=True, null=False, choices=INITIALS)
+    firstName = models.CharField(max_length=255, blank=True, null=True)
+    middleName = models.CharField(max_length=255, blank=True, null=True)
+    lastName = models.CharField(max_length=255, blank=True, null=True)
+    fullName = models.CharField(max_length=255, blank=True, null=True)
+    email = models.CharField(max_length=255, blank=True, null=True)
+    id_type = models.CharField(max_length=255,blank=True, null=False, choices=ID_TYPE)
+    idNumber = models.CharField(max_length=255,blank=True, null=False)
+    id_picture = models.ImageField()
+    postaddres=models.CharField(max_length=255,blank=True, null=False)
+    nationality= models.CharField(max_length=255, blank=True, null=True)
+    placeOfBirth =  models.CharField(max_length=255, blank=True, null=True)
+    PostalAddress=models.CharField(max_length=255,blank=True, null=False)
+    postcode=models.CharField(max_length=255,blank=True, null=False)
+    physicalAddres =  models.CharField(max_length=255, blank=True, null=True)
     title = models.CharField(max_length=255,blank=True, null=False, choices=TITLE)
-    sex = models.CharField(max_length=255,blank=True, null=False, choices=GENDER)
+    sex = (("M","MALE"),("F","FEMALE"))
     dateofbirth = models.DateField(max_length=255,blank=True, null=False)
-    profession = models.ForeignKey(Profession,on_delete = models.PROTECT, max_length=255,blank=True, null=False)
     education = models.ForeignKey(Education,on_delete = models.PROTECT, max_length=255,blank=True, null=False)
     prefered_language = models.CharField(max_length=255,blank=True, null=False, choices = prefered_language)
-    country = models.CharField(max_length=255, blank=True,null=True, default='Rwanda')
-    province = models.CharField(max_length=255,blank=True, null=False)
-    district = models.CharField(max_length=255,blank=True, null=False)
-    sector = models.CharField(max_length=255,blank=True, null=False)
-    cell = models.CharField(max_length=255,blank=True, null=False)
-    village = models.CharField(max_length=255,blank=True, null=False)
-    civil_status = models.CharField(max_length=255,blank=True, null=False, choices=civil_status)
+    country = models.ForeignKey(Country, on_delete=models.PROTECT, blank=True,null=True)
+    province = models.ForeignKey(Province, on_delete=models.PROTECT, blank=True,null=True)
+    district = models.ForeignKey(District, on_delete=models.PROTECT, blank=True,null=True)
+    sector = models.ForeignKey(Sector, on_delete=models.PROTECT, blank=True,null=True)
+    cell = models.ForeignKey(Village, on_delete=models.PROTECT, blank=True,null=True)
+    village = models.ForeignKey(Cell, on_delete=models.PROTECT, blank=True,null=True)
+    ton =  models.CharField(max_length=255, blank=True, null=True)
+    MaritalStatus = models.CharField(max_length=255,blank=True, null=False, choices=civil_status)
     client_status = models.CharField(max_length=255,blank=True, null=False, choices=client_status)
+    activitySector = models.CharField(max_length=255, blank=True, null=True)
+    occupation = models.CharField(max_length=255, blank=True, null=True)
+    SubSectors = models.CharField(max_length=255, blank=True, null=True)
+    ContactPerson = models.CharField(max_length=255, blank=True, null=True)
+    NextofKin = models.CharField(max_length=255, blank=True, null=True) 
+    NextofKinContacts = models.CharField(max_length=255, blank=True, null=True) 
+    comopanyName =models.CharField(max_length=255, blank=True, null=True)
+    tinDocument = models.ImageField()
+    
+    def __str__(self) -> str:
+        return self.user.first_name
 
 class Customer(AbstractBaseUser):
     username=models.CharField(max_length=255,blank=True, null=True,unique=True)

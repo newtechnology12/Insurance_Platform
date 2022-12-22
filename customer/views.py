@@ -657,7 +657,6 @@ def CoverIdentification_api_detail(request, pk, format=None):
     except CoverIdentification.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-
     if request.method == 'GET':
         serializer = CoverIdentificationSerializer(question)
         return Response(serializer.data)
